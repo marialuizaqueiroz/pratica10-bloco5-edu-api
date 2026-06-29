@@ -2,13 +2,12 @@ name: SAST com SonarCloud
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
 
 jobs:
   sonarcloud:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -27,13 +26,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: SAST – SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@v5
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Run SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
         with:
-          args: |
-            -Dsonar.organization=lucasreinaldo-bash
-            -Dsonar.projectKey=lucasreinaldo-bash_edu-api
-            -Dsonar.login=${{ env.SONAR_TOKEN }}
-            -Dsonar.host.url=https://sonarcloud.io
+          organization: ${{ secrets.SONAR_ORG }}
+          projectKey: ${{ secrets.SONAR_PROJECT }}
+          token: ${{ secrets.SONAR_TOKEN }}
