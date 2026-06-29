@@ -21,3 +21,14 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`EduLearn User Service (vulnerável) rodando na porta ${PORT}`);
 });
+
+
+// Exemplo: cálculo simples via função segura
+app.get('/calc', (req, res) => {
+  const expr = req.query.expr || '2+2';
+  
+  // Não use eval; suporte apenas números e os operadores +, -, *, /
+  const safe = expr.match(/^[0-9+\-*/ ().]+$/) ? Function(`return ${expr}`)() : null;
+  
+  res.json({ result: safe });
+});
