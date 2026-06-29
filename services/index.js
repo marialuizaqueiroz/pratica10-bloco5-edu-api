@@ -23,11 +23,12 @@ app.listen(PORT, () => {
 });
 
 
+// Exemplo: cálculo simples via função segura
 app.get('/calc', (req, res) => {
   const expr = req.query.expr || '2+2';
   
-  // Insecure eval
-  const result = eval(expr);
+  // Não use eval; suporte apenas números e os operadores +, -, *, /
+  const safe = expr.match(/^[0-9+\-*/ ().]+$/) ? Function(`return ${expr}`)() : null;
   
-  res.json({ result });
+  res.json({ result: safe });
 });
